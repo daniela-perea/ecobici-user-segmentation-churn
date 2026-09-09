@@ -1,158 +1,127 @@
-# Optimización de la Movilidad Urbana: Segmentación de Usuarios y Predicción de Churn en EcoBici 🚲
+# 🚲 EcoBici — Segmentación de Usuarios y Predicción de Churn
 
-## 📌 Introducción
+Proyecto de análisis de datos y Machine Learning aplicado a datos abiertos de **EcoBici, Ciudad de Buenos Aires**, orientado a identificar perfiles de usuarios y predecir riesgo de abandono (*churn*).
 
-La movilidad sustentable se ha convertido en uno de los principales desafíos de las grandes ciudades. En este contexto, el sistema de bicicletas públicas **EcoBici** de la Ciudad de Buenos Aires genera una gran cantidad de datos que permiten analizar patrones de uso, hábitos de movilidad y niveles de retención de usuarios.
+## 🎯 Objetivo
 
-Este proyecto utiliza técnicas de **Machine Learning** y análisis de datos para transformar registros de viajes en información estratégica, permitiendo identificar perfiles de usuarios y predecir posibles casos de abandono del sistema (*Churn*).
+Analizar el comportamiento histórico de los usuarios para:
 
----
+* Segmentar usuarios según sus patrones de uso.
+* Identificar factores asociados al abandono.
+* Predecir usuarios con riesgo de *churn*.
+* Generar insights para estrategias de retención.
 
-## 🎯 Objetivo del Proyecto
+## 📊 Datos
 
-Desarrollar un ecosistema de modelos de Machine Learning capaz de:
-
-- Segmentar usuarios de EcoBici según su comportamiento e intensidad de uso.
-- Detectar patrones de movilidad urbana.
-- Predecir la probabilidad de **Churn** (usuarios con más de 60 días de inactividad).
-- Generar insights que permitan diseñar estrategias de retención y optimización del servicio.
-
----
-
-## 👩‍💻 Integrante
-
-- **Nombre:** Daniela Perea  
-- **Comisión:** 26141  
-
----
-
-## 📂 Dataset Utilizado
-
-Se trabajó con datos abiertos publicados por el Gobierno de la Ciudad de Buenos Aires.
-
-- **Fuente:** [Portal de Datos Abiertos de Buenos Aires - EcoBici](https://data.buenosaires.gob.ar/dataset/bicicletas-publicas)
-- **Archivo utilizado:** `recorridos-2025.csv`
+Se utilizaron datos abiertos de recorridos de EcoBici publicados por el Gobierno de la Ciudad de Buenos Aires.
 
 El dataset contiene información sobre:
 
-- Fecha y horario de inicio/fin de viaje
-- Estaciones de origen y destino
-- Duración del recorrido
-- Datos demográficos de usuarios
-- Tipo de usuario y comportamiento de uso
+* Edad y género.
+* Fechas y horarios de viajes.
+* Duración de recorridos.
+* Estaciones de origen y destino.
+* Identificadores de viajes y usuarios.
 
----
+## 🔄 Flujo del proyecto
 
-## 🗂️ Estructura del Repositorio
-
-```bash
-📦 Proyecto
-├── 📁 Pre_Entrega_Proyecto_Final
-│   ├── 📓 ML_Pre_Entrega_Proyecto_Final.ipynb
-│   └── 📁 dataset
-├── 📄 README.md
+```text
+Datos de viajes
+      ↓
+Limpieza y preprocesamiento
+      ↓
+Feature Engineering
+      ↓
+Matriz RFM a nivel usuario
+      ↓
+EDA
+      ↓
+K-Means
+      ↓
+Clasificación de Churn
+      ↓
+Evaluación y optimización
 ```
 
-### Contenido principal
+## ⚙️ Feature Engineering
 
-- **ML_Pre_Entrega_Proyecto_Final.ipynb**
-  - Limpieza y preprocesamiento de datos
-  - Tratamiento de valores nulos
-  - Detección y eliminación de outliers
-  - Feature Engineering
-  - Creación de la variable objetivo (*Churn*)
-  - Análisis exploratorio de datos (EDA)
-  - Segmentación de usuarios
-  - Integración y preparación final de datasets
+Se transformaron los registros transaccionales de viajes en métricas agregadas a nivel usuario:
 
-- **dataset/**
-  - Datasets originales
-  - Dataset procesado para modelado
+* **Recencia:** días desde el último viaje.
+* **Frecuencia:** cantidad total de viajes.
+* **Intensidad:** duración promedio de los recorridos.
+* **Churn:** usuario con más de 60 días de inactividad.
 
----
+## 🤖 Machine Learning
 
-## ⚙️ Metodología
+### Segmentación
 
-El proyecto sigue las principales etapas del ciclo de vida de un proyecto de Machine Learning:
+Se utilizó **K-Means** para identificar perfiles de comportamiento.
 
-### 1️⃣ Limpieza y Preprocesamiento
+El número de clusters se evaluó mediante:
 
-- Eliminación de viajes inválidos o inconsistentes
-- Tratamiento de datos faltantes
-- Conversión y normalización de variables temporales
-- Filtrado de duraciones extremas (*outliers*)
+* Método del Codo.
+* Silhouette Score.
+* StandardScaler para estandarización de variables.
 
-### 2️⃣ Ingeniería de Características (*Feature Engineering*)
+### Predicción de Churn
 
-- Construcción de la variable objetivo **Churn**
-- Generación de métricas de comportamiento:
-  - Frecuencia de uso
-  - Duración promedio de viajes
-  - Cantidad de recorridos
-  - Distancias recorridas
-  - Antigüedad del usuario
+Se evaluaron dos modelos:
 
-### 3️⃣ Análisis Exploratorio de Datos (EDA)
+* Regresión Logística como baseline.
+* Random Forest Classifier.
 
-Se analizaron patrones relacionados con:
+La optimización del modelo se realizó mediante **GridSearchCV** y validación cruzada de 5 folds.
 
-- Franjas horarias de uso
-- Distribución por género y edad
-- Intensidad de uso
-- Comportamiento temporal
-- Tendencias de movilidad urbana
+## 📈 Evaluación
 
-### 4️⃣ Modelado No Supervisado
+Se utilizaron:
 
-Aplicación de técnicas de segmentación para identificar perfiles de usuarios, como:
+* Matriz de Confusión.
+* Recall.
+* F1-Score Macro.
+* Validación Cruzada.
 
-- Usuarios intensivos
-- Usuarios ocasionales
-- Usuarios nuevos o de baja actividad
+El **Recall** fue priorizado debido al objetivo de identificar la mayor cantidad posible de usuarios en riesgo de abandono.
 
-### 5️⃣ Modelado Supervisado
+## 🛠️ Tecnologías
 
-Desarrollo y comparación de modelos predictivos para:
+* Python
+* Pandas
+* NumPy
+* Scikit-Learn
+* Matplotlib
+* Seaborn
+* Google Colab
 
-- Predicción de Churn
-- Análisis de retención
-- Proyección de demanda futura
+## 📁 Estructura
 
----
+```text
+.
+├── Pre_Entrega_Proyecto_Final/
+│   ├── ML_Pre_Entrega_Proyecto_Final.ipynb
+│   └── dataset/
+│
+├── Entrega_Final_Proyecto_Integrador/
+│   ├── Perea_Daniela_Comision_25262_TPI_Machine_Learning.ipynb
+│   └── dataset/
+│       ├── recorridos-2025.csv
+│       └── usuarios_procesado_rfm.csv
+│
+└── README.md
+```
 
-## 🛠️ Herramientas y Tecnologías
+## 💡 Resultados e Insights
 
-### Lenguaje
+El análisis permite identificar diferentes perfiles de uso y desarrollar un modelo orientado a detectar usuarios con riesgo de abandono.
 
-- Python 3.x
+Las conclusiones finales y métricas obtenidas se encuentran documentadas en el notebook de la entrega final.
+* [Ver conclusiones 🡥](https://github.com/daniela-perea/ecobici-user-segmentation-churn)
 
-### Librerías principales
+## 👩‍💻 Autora
 
-- `Pandas` → Manipulación y análisis de datos
-- `NumPy` → Operaciones numéricas
-- `Matplotlib` y `Seaborn` → Visualización de datos
-- `Scikit-Learn` → Modelado y preprocesamiento
-- `Google Colab` → Desarrollo y ejecución en la nube
+**Daniela Perea**
 
----
-
-## 📈 Resultados Esperados
-
-A través de este proyecto se busca:
-
-- Comprender el comportamiento de los usuarios de EcoBici.
-- Detectar posibles casos de abandono del sistema.
-- Mejorar la toma de decisiones basada en datos.
-- Contribuir al análisis de movilidad sustentable en entornos urbanos.
-
----
-
-## 🚀 Próximos Pasos
-
-- Entrenamiento y evaluación de modelos predictivos.
-- Optimización de hiperparámetros.
-- Visualización avanzada de métricas.
-- Implementación de dashboards interactivos.
-- Generación de recomendaciones estratégicas para retención de usuarios.
+Estudiante de Ciencia de Datos e Inteligencia Artificial.
 
 ---
